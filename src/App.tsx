@@ -6,7 +6,7 @@ function App() {
     <div className='App'>
       <Column state = "PLANNED" />
       <Column state = "ONGOING" />
-      <Column state = "OUTGOING" />
+      <Column state = "DONE" />
     </div>
   )
 }
