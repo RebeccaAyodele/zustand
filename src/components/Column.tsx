@@ -17,9 +17,25 @@ const Column = ({ state }: ColumnProps) => {
   );
 
   const addTask = useStore((store) => store.addTask);
+  const setDraggedTask = useStore((store) => store.setDraggedTask);
+  const draggedTask = useStore((store) => store.draggedTask);
+  const moveTask = useStore((store) => store.moveTask);
+  
 
   return (
-    <div className="column">
+    <div
+      className="column"
+      onDragOver={(e) => {
+        e.preventDefault();
+      }}
+      onDrop={() => {
+        console.log(draggedTask)
+        if (draggedTask) {
+          moveTask(draggedTask, state);
+        }
+        setDraggedTask(null)
+      }}
+    >
       <div className="titlewrapper">
         <p>{state}</p>
         <button onClick={() => setOpen(true)}>Add</button>
@@ -29,17 +45,19 @@ const Column = ({ state }: ColumnProps) => {
       ))}
       {open && (
         <div className="modal">
-        <div className="modalContent">
-          <input onChange={(e) => setText(e.target.value)} value={text} />
-          <button
-            onClick={() => {
-              addTask(text, state);
-              setText("");
-              setOpen(false);
-            }}
-          >Add</button>
+          <div className="modalContent">
+            <input onChange={(e) => setText(e.target.value)} value={text} />
+            <button
+              onClick={() => {
+                addTask(text, state);
+                setText("");
+                setOpen(false);
+              }}
+            >
+              Add
+            </button>
+          </div>
         </div>
-      </div>
       )}
     </div>
   );
