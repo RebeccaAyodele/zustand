@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useStore } from "../store";
 import "./Column.css";
 import Task from "./Task";
+import classNames from "classnames";
 
 type ColumnProps = {
   state: "PLANNED" | "ONGOING" | "DONE";
@@ -10,6 +11,8 @@ type ColumnProps = {
 const Column = ({ state }: ColumnProps) => {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
+  const [drop, setDrop] = useState(false);
+
   const tasks = useStore((store) => store.tasks);
   const filtered = useMemo(
     () => tasks.filter((task) => task.state === state),
@@ -20,20 +23,26 @@ const Column = ({ state }: ColumnProps) => {
   const setDraggedTask = useStore((store) => store.setDraggedTask);
   const draggedTask = useStore((store) => store.draggedTask);
   const moveTask = useStore((store) => store.moveTask);
-  
 
   return (
     <div
-      className="column"
+      className={classNames("column", {drop: drop})}
       onDragOver={(e) => {
+        setDrop(true);
         e.preventDefault();
       }}
+
+      onDragLeave={(e) => {
+        setDrop(false);
+        e.preventDefault();
+      } }
       onDrop={() => {
-        console.log(draggedTask)
+        setDrop(false) //for dotted lines
+        console.log(draggedTask);
         if (draggedTask) {
           moveTask(draggedTask, state);
         }
-        setDraggedTask(null)
+        setDraggedTask(null);
       }}
     >
       <div className="titlewrapper">

@@ -7,6 +7,7 @@
     margin: 0 0.5rem;
     border-radius: 4px;
     padding: 0.5rem;
+    border: dashed transparent 4px;
 }
 
 .titlewrapper {
@@ -51,4 +52,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.column.drop {
+    border-color:white;
 }
