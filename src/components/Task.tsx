@@ -12,8 +12,9 @@ const Task = ({ title }: TaskProps) => {
     <div className="task">
         <div>{title}</div>
         <div>
-            <div className="bottomrapper"></div>
-            <div className={classNames('status', STATUS)}>{STATUS}</div>
+            <div className="bottomrapper">
+              <div className={classNames('status', STATUS)}>{STATUS}</div>
+            </div>
         </div>
     </div>
   )
