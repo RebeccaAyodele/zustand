@@ -8,6 +8,7 @@ type Task = {
 type StoreProps = {
   tasks: Task[];
   addTask: (title: string, state: Task["state"]) => void
+  deleteTask: (title: string) => void
 }
 
 // Task["state"] is a union of string literal and it's another way of writing "PLANNED" | "ONGOING" | "DONE"
@@ -17,6 +18,10 @@ export const useStore = create<StoreProps>((set) => ({
   addTask: (title, state) =>
     set((store) => ({
       tasks: [...store.tasks, { title, state }]
+    })),
+    deleteTask: (title: string) =>
+    set((store) => ({
+      tasks: store.tasks.filter((task)=>task.title !== title)
     }))
 }));
 
