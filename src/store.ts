@@ -6,11 +6,18 @@ type Task = {
 }
 
 type StoreProps = {
-  tasks: Task[]
+  tasks: Task[];
+  addTask: (title: string, state: Task["state"]) => void
 }
 
-const store = (): StoreProps => ({
-  tasks: [{ title: "TestTask", state: "PLANNED" }]
-})
+// Task["state"] is a union of string literal and it's another way of writing "PLANNED" | "ONGOING" | "DONE"
 
-export const useStore = create<StoreProps>(store)
+export const useStore = create<StoreProps>((set) => ({
+  tasks: [{ title: "TestTask", state: "PLANNED" }],
+  addTask: (title, state) =>
+    set((store) => ({
+      tasks: [...store.tasks, { title, state }]
+    }))
+}));
+
+// set lets you update the store, when you call set with a function, Zustand gives you the current state of the store — that’s what store is.
