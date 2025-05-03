@@ -15,23 +15,35 @@ type StoreProps = {
   moveTask: (title: string, state: Task["state"]) => void;
 };
 
+const log = (config: any) => (set: any, get: any, api: any) =>
+  config(
+    (...args: any[]) => {
+      console.log("State update:", ...args);
+      set(...args);
+    },
+    get,
+    api
+  );
+
+
 export const useStore = create<StoreProps>()(
-  devtools(
+  log(
+    devtools(
     persist(
       (set) => ({
         tasks: [],
         draggedTask: null,
-        addTask: (title, state) =>
-          set((store) => ({
+        addTask: (title: string, state: Task["state"]) =>
+          set((store: StoreProps) => ({
             tasks: [...store.tasks, { title, state }],
           })),
-        deleteTask: (title) =>
-          set((store) => ({
+        deleteTask: (title: string) =>
+          set((store: StoreProps) => ({
             tasks: store.tasks.filter((task) => task.title !== title),
           })),
-        setDraggedTask: (title) => set({ draggedTask: title }),
-        moveTask: (title, state) =>
-          set((store) => ({
+        setDraggedTask: (title: string) => set({ draggedTask: title }),
+        moveTask: (title: string, state: Task["state"]) =>
+          set((store: StoreProps) => ({
             tasks: store.tasks.map((task) =>
               task.title === title ? { ...task, state } : task
             ),
@@ -42,5 +54,6 @@ export const useStore = create<StoreProps>()(
       }
     )
     // devtools has no name config here — it uses the store's name by default or shows "anonymous"
+  )
   )
 );
